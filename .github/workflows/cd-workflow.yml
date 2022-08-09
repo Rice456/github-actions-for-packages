@@ -60,6 +60,7 @@ jobs:
           name: webpack artifacts
           path: public
       - name: Docker meta
+        id: meta
         uses: docker/metadata-action@v4
         with:
           images: rice456/github-actions-for-packages/${{github.ref_name}}
