@@ -63,7 +63,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: rice456/github-actions-for-packages/${{github.ref_name}}
+          images: rice456/github-actions-for-packages:${{github.ref_name}}
           tags: type=sha
 
       - name: Set up QEMU
