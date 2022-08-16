@@ -66,7 +66,7 @@ jobs:
         with:
           images: ghcr.io/rice456/github-actions-for-packages
           tags: |
-            type=ref,event=push
+            type=ref,event=branch
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
