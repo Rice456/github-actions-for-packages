@@ -65,7 +65,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ghcr.io/rice456/github-actions-for-packages/${{github.ref_name}}
-          tags: type=sha
+          tags: type=edge
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
