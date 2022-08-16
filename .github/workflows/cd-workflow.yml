@@ -64,7 +64,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/rice456/github-actions-for-packages/${{github.ref_name}}
+          images: ghcr.io/rice456/github-actions-for-packages
+          tags: type=ref,event=push
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -85,5 +86,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{github.ref_name}}
+          tags: ${{ steps.meta.outputs.tags }}
           file: ./Dockerfile
