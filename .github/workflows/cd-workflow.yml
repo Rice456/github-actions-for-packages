@@ -68,13 +68,11 @@ jobs:
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
-        env:
-          SHA_INI: ${{github.sha}}
         with:
           images: ghcr.io/rice456/github-actions-for-packages
           tags: |
             type=ref,event=branch
-            type=ref,suffix=-{{"@sha:"+ SHA_INI[:7]}},event=tag
+            type=ref,suffix=-${{github.sha}},event=tag
             type=ref,event=pr
 
       - name: Set up QEMU
