@@ -65,6 +65,10 @@ jobs:
         with:
           name: webpack artifacts
           path: public
+      - name: Set tag
+        if: ${{github.ref_type == 'tag'}}
+        id: myTag
+        run: echo "::set-output name=sha_short::$(git rev-parse --short=7 HEAD)"
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
@@ -72,7 +76,7 @@ jobs:
           images: ghcr.io/rice456/github-actions-for-packages
           tags: |
             type=ref,event=branch
-            type=ref,suffix=-${{github['sha'][:7]}},event=tag
+            type=ref,suffix=-${{ steps.vars.outputs.sha_short }},event=tag
             type=ref,event=pr
 
       - name: Set up QEMU
