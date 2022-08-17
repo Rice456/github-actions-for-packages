@@ -72,7 +72,7 @@ jobs:
           images: ghcr.io/rice456/github-actions-for-packages
           tags: |
             type=ref,event=branch
-            type=ref,suffix=-@-sha-${{github.sha}},event=tag
+            type=ref,suffix=-${{"@sha:"+github.sha}},event=tag
             type=ref,event=pr
 
       - name: Set up QEMU
