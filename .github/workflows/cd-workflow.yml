@@ -68,7 +68,7 @@ jobs:
       - name: Set tag
         if: ${{github.ref_type == 'tag'}}
         id: myTag
-        run: echo "::set-output name=sha_short::$(git rev-parse --short=7 HEAD)"
+        run: echo "::set-output name=sha_short::$(git rev-parse --short=7 ${{github.sha}})"
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
