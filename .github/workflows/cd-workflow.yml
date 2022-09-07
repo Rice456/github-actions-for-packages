@@ -6,8 +6,6 @@ on:
   push:
     branches:
       - "**"
-    tags:
-      - "**" # matches every tags
   pull_request:
     branches:
       - "**"
