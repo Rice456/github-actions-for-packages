@@ -1,6 +1,6 @@
 {
   "name": "github-actions-for-packages",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Learn how to use GitHub Actions!",
   "main": "index.js",
   "directories": {
