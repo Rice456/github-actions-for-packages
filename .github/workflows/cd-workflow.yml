@@ -21,9 +21,10 @@ jobs:
     needs: pre_load
     if: needs.pre_load.outputs.should_skip != 'true' && github.ref_type != 'tag'
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v1
+      - name: Set NODE_OPTIONS environment variable
+        run: echo "NODE_OPTIONS=--openssl-legacy-provider" >> $GITHUB_ENV
       - name: npm install and build webpack
         run: |
           npm install
