@@ -19,7 +19,7 @@ jobs:
           concurrent_skipping: 'same_content_newer'
   test:
     needs: pre_load
-    if: needs.pre_load.outputs.should_skip != 'true' && github.ref_type != 'tag'
+    if: needs.pre_load.outputs.should_skip != 'true'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -62,6 +62,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - uses: actions/upload-artifact@master
+        with:
+          name: webpack artifacts
+          path: public/
       - name: Download built artifact
         uses: actions/download-artifact@main
         with:
