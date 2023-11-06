@@ -2,38 +2,41 @@
 
 name: Docker CD
 
-on:
-  push:
-    branches:
-      - "**"
-  pull_request:
-    branches:
-      - "**"
-jobs:
-  build:
-    if: "!contains(github.event.head_commit.message, 'skip ci')"
-    runs-on: ubuntu-latest
+on: push
 
+jobs:
+  pre_load:
+    name: Verify Test Eligibility
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          paths_ignore: '["**/README.md", "**/.gitignore"]'
+          skip_after_successful_duplicate: 'true'
+          concurrent_skipping: 'same_content_newer'
+  test:
+    needs: pre_load
+    if: needs.pre_load.outputs.should_skip != 'true' && github.ref_type != 'tag'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-lastest, windows-2016 ]
+        node-version: [ 14.x ]
     steps:
       - uses: actions/checkout@v1
       - name: npm install and build webpack
         run: |
           npm install
           npm run build
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
       - uses: actions/upload-artifact@master
         with:
           name: webpack artifacts
           path: public/
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      matrix:
-        os: [ubuntu-lastest, windows-2016]
-        node-version: [12.x, 14.x]
-
-    steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -53,6 +56,7 @@ jobs:
   Build-and-Push-Docker-Image:
     runs-on: ubuntu-latest
     needs: test
+    if: always() && (needs.test.result == 'success' || github.ref_type == 'tag')
     name: Docker Build, Tag, Push
 
     steps:
